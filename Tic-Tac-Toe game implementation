@@ -1,0 +1,81 @@
+player1=str(input("Enter your name,player 1: "))
+player2=str(input("Enter your name,player 2: "))
+def sum(a,b,c):
+    return a+b+c
+def checkDraw(xState, yState):
+    empty_spots = [i for i in range(9) if xState[i] == 0 and yState[i] == 0]
+    return len(empty_spots) == 0
+
+def printBoard(xState,yState):
+    zero='X' if xState[0] else('O' if yState[0] else 0)
+    one='X' if xState[1] else ('O' if yState[1] else 1)
+    two='X' if xState[2] else ('O' if yState[2] else 2)
+    three='X' if xState[3] else ('O' if yState[3] else 3)
+    four='X' if xState[4] else ('O' if yState[4] else 4)
+    five='X' if xState[5] else ('O' if yState[5] else 5)
+    six='X' if xState[6] else ('O' if yState[6] else 6)
+    seven='X' if xState[7] else ('O' if yState[7] else 7)
+    eight='X' if xState[8] else ('O' if yState[8] else 8)
+    print(f"{zero}|{one}|{two}")
+    print("------")
+    print(f"{three}|{four}|{five}")
+    print("------")
+    print(f"{six}|{seven}|{eight}")
+    print()
+def checkWin(xState,yState):
+        wins=[[0,1,2],[0,3,6],[3,4,5],[6,7,8],[2,5,8],[1,4,7],[0,4,8],[2,4,6]]
+        for win in wins:
+            
+            if(sum(xState[win[0]],xState[win[1]],xState[win[2]])==3):
+                print(f"{player1} won")
+                printBoard(xState,yState)
+                return 1
+                 
+            if(sum(yState[win[0]],yState[win[1]],yState[win[2]])==-3):
+                print(f"{player2} won")
+                printBoard(xState,yState)
+                return 0
+            if checkDraw(xState, yState):
+                print("It's a draw!")
+                printBoard(xState, yState)
+                return True
+                break
+        
+        return -1
+
+xState=[0,0,0,0,0,0,0,0,0]
+yState=[0,0,0,0,0,0,0,0,0]
+turn=1
+print(f"Welcome to Tic-Tac-Toe {player1} and {player2}!")
+while True:
+    printBoard(xState, yState)
+    
+    if turn == 1:
+        player = player1
+        mark = 1
+    else:
+        player = player2
+        mark = -1
+    
+    print(f"{player}'s Turn")
+    
+    while True:
+        choice = int(input(f"Enter the value where you want to put the mark, {player}: "))
+        if 0 <= choice <= 8:
+            if xState[choice] == 0 and yState[choice] == 0:
+                break
+            else:
+                print("That position is already taken! Please choose another.")
+        else:
+            print("Invalid input! Please enter a number between 0 and 8.")
+
+    if turn == 1:
+        xState[choice] = mark
+    else:
+        yState[choice] = mark
+
+    cwin = checkWin(xState, yState)
+    if cwin != -1:
+        print("Match Over")
+        break
+    turn = 1-turn
